@@ -1,0 +1,88 @@
+// ReturnRepository.js
+import React from "react";
+import ReturnTopbar from './components/ReturnTopbar';
+import {useState} from "react";
+import { departments } from "layouts/authentication/sign-up/metadata";
+ 
+const ReturnRepository = () => {
+   const [filters , setFilters] = useState({
+    departments:"",
+    frequency:"",
+    status:"",
+    month:"",
+    year:"",
+    returnText:"",
+   });
+   const [selectedMonth, setSelectedMonth]= useState(new Date().getMonth());
+   const [selectedYear,setSelectedYear]= useState(new Date().getFullYear());
+   const[showFilters,setShowFilters]=useState(false); // Fixed typo here
+ 
+   const handleMonthChange =(year,monthIndex) => {
+    const formattedMonth = `${year}-${String(monthIndex + 1).padStart(2, "0")}`; // Fixed template literal
+    console.log("Month clicked:",formattedMonth);
+    const updated ={...filters,month:formattedMonth};
+    setFilters(updated);
+    handleFilterApply(updated);
+   };
+   
+   const handleYearChange=(year)=>{
+    const updated={...filters,year};
+    setFilters(updated);
+    handleFilterApply(updated);
+   };
+   const handleSearchChange=(e) =>{
+    const value=e.target.value;
+    const updated ={...filters,returnText:value};
+    setFilters(updated);
+    handleFilterApply(updated);
+   };
+   const handleFilterApply=async(updatedFilters)=>{
+    console.log("Filters being applied:",updatedFilters);
+    setFilters(updatedFilters);
+   };
+   const handleClear = () => {
+    const clearedFilters= {
+        departments: "",
+        frequency: "",
+        status: "",
+        month: "",
+        returnText: "",
+    };
+    setFilters(clearedFilters);
+    handleFilterApply(clearedFilters);
+   };
+   
+   const handleDownload = () => {
+    const formattedRange = `${selectedYear}-${selectedYear}`; // Fixed template literal
+    console.log("Downloading for:",formattedRange);
+   };
+   
+   
+   return (
+   
+        <ReturnTopbar
+            filters={filters}
+            setFilters={setFilters}
+            selectedMonth={selectedMonth}
+            setSelectedMonth={setSelectedMonth}
+            onMonthChange={handleMonthChange}
+            onYearChange={handleYearChange}
+            onSearchChange={handleSearchChange}
+            handleFilterApply={handleFilterApply}
+            onClear={handleClear}
+            selectedYear={selectedYear}
+            setSelectedYear={setSelectedYear}
+            handleDownload={handleDownload}
+            showFilters={showFilters} // Fixed prop name
+            setShowFilters={setShowFilters} // Fixed prop name
+           
+ 
+        />
+       
+             
+       
+     
+   );
+};
+ 
+export default ReturnRepository;
